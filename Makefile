@@ -13,8 +13,14 @@ CPPSORCES  = ${wildcard ${SRCDIR}/*.cpp}
 COBJECTS = ${addprefix ${OBJDIR}/, ${notdir ${CSORCES:.c=.o}}}
 CPPOBJECTS = ${addprefix ${OBJDIR}/, ${notdir ${CPPSORCES:.cpp=.o}}}
 
-${TARGET}: ${COBJECTS} ${CPPOBJECTS}
+${TARGET}: ${BINDIR} ${OBJDIR} ${COBJECTS} ${CPPOBJECTS}
 	${CXX} ${CFLAGS} ${LIBRARY} ${COBJECTS} ${CPPOBJECTS} -o ${TARGET} ${LIB}
+
+${BINDIR}:
+	mkdir ${BINDIR}
+
+${OBJDIR}:
+	mkdir ${OBJDIR}
 
 ${OBJDIR}/%.o: ${SRCDIR}/%.c
 	${CC} ${CFLAGS} ${INCLUDE} -o $@ -c $< ${LIB}
@@ -23,4 +29,4 @@ ${OBJDIR}/%.o: ${SRCDIR}/%.cpp
 	${CXX} ${CFLAGS} ${INCLUDE} -o $@ -c $< ${LIB}
 
 clean: 
-	rm -rf ${TARGET} ${COBJECTS} ${CPPOBJECTS}
+	rm -rf ${TARGET} ${OBJDIR}/*
