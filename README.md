@@ -31,3 +31,5 @@ $ make
 ```
 $ ./bin/GPU-pathtracer
 ```
+
+<img src="./otput_images/ldri.bmp" />
