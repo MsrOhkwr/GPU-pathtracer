@@ -394,7 +394,7 @@ int main()
         glGetTexImage(GL_TEXTURE_2D, 0, GL_BGR, GL_UNSIGNED_BYTE, gl_texture_bytes_b.get());
         cv::Mat LDRI(height_texture, width_texture, CV_8UC3, gl_texture_bytes_b.get());
         cv::flip(LDRI, LDRI, 0);
-        cv::imwrite("./output_images/ldri.jpg", LDRI);
+        cv::imwrite("./output_images/ldri.bmp", LDRI);
     }
     catch(...)
     {

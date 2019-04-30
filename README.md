@@ -32,4 +32,4 @@ $ make
 $ ./bin/GPU-pathtracer
 ```
 
-<img src="./output_images/ldri.jpg" />
+<img src="./output_images/ldri.bmp" />
