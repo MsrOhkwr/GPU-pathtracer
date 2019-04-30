@@ -385,16 +385,16 @@ int main()
         glBindTexture(GL_TEXTURE_2D, texture_input);
         const std::unique_ptr<float[]> gl_texture_bytes_f = std::make_unique<float[]>(width_texture * height_texture * 3);
         glGetTexImage(GL_TEXTURE_2D, 0, GL_BGR, GL_FLOAT, gl_texture_bytes_f.get());
-        cv::Mat HDRI(width_texture, height_texture, CV_32FC3, gl_texture_bytes_f.get());
+        cv::Mat HDRI(height_texture, width_texture, CV_32FC3, gl_texture_bytes_f.get());
         cv::flip(HDRI, HDRI, 0);
         cv::imwrite("./output_images/hdri.hdr", HDRI);
 
         glBindTexture(GL_TEXTURE_2D, texture_output);
         const std::unique_ptr<unsigned char[]> gl_texture_bytes_b = std::make_unique<unsigned char[]>(width_texture * height_texture * 3);
         glGetTexImage(GL_TEXTURE_2D, 0, GL_BGR, GL_UNSIGNED_BYTE, gl_texture_bytes_b.get());
-        cv::Mat LDRI(width_texture, height_texture, CV_8UC3, gl_texture_bytes_b.get());
+        cv::Mat LDRI(height_texture, width_texture, CV_8UC3, gl_texture_bytes_b.get());
         cv::flip(LDRI, LDRI, 0);
-        cv::imwrite("./output_images/ldri.jpg", HDRI);
+        cv::imwrite("./output_images/ldri.jpg", LDRI);
     }
     catch(...)
     {
