@@ -1,2 +1,3 @@
-./include/glad/* linguist-vendor
-./include/KHR/* linguist-vendor
+./include/glad/* linguist-vendored
+./include/KHR/* linguist-vendored
+./src/glad.c linguist-vendored
