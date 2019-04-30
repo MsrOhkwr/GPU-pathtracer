@@ -1,5 +1,7 @@
 # GPU-pathtracer
 
+<img src="./output_images/ldri.bmp" />
+
 ## Requirements
 - OpenGL 4.5 or higher
 ```
@@ -31,5 +33,3 @@ $ make
 ```
 $ ./bin/GPU-pathtracer
 ```
-
-<img src="./output_images/ldri.bmp" />
