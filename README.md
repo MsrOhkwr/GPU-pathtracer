@@ -16,7 +16,7 @@ $ sudo apt install libglfw3-dev
 
 - GLAD
 
-downlod from here -> https://glad.dav1d.de/
+download from here -> https://glad.dav1d.de/
 
 
 - OpenCV
