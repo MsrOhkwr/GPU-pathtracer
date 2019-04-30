@@ -3,7 +3,7 @@
 <img src="./output_images/ldri.bmp" />
 
 ## Requirements
-- OpenGL 4.5 or higher
+- OpenGL 4.5
 ```
 $ glxinfo | grep "OpenGL core profile shading language version string"
 OpenGL core profile shading language version string: 4.50
@@ -13,11 +13,6 @@ OpenGL core profile shading language version string: 4.50
 ```
 $ sudo apt install libglfw3-dev
 ```
-
-- GLAD
-
-download from here -> https://glad.dav1d.de/
-
 
 - OpenCV
 ```
