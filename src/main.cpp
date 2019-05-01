@@ -1,6 +1,6 @@
 #include <iostream>
 #include <memory>
-#include <glsl.h>
+#include <glsl.hpp>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <opencv2/opencv.hpp>

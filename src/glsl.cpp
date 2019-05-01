@@ -2,7 +2,7 @@
 #include <fstream>
 #include <cmath>
 #include <memory>
-#include <glsl.h>
+#include <glsl.hpp>
 
 void framebuffer_size_callback(GLFWwindow* window, const int width, const int height)
 {
