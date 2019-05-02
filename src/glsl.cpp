@@ -43,7 +43,7 @@ int readShaderSource(const GLuint shader, const char* filename)
 	{
 		source = std::make_unique<const char[]>(length);
 	}
-	catch(...)
+	catch(std::bad_alloc&)
 	{
 		std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot allocate memory" << std::endl;
 		return GL_FALSE;
@@ -63,7 +63,7 @@ int readShaderSource(const GLuint shader, const char* filename)
 		{
 			glShaderSource(shader, 1, std::make_unique<const char* const>(source.get()).get(), &length);
 		}
-		catch(...)
+		catch(std::bad_alloc&)
 		{
 			std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot allocate memory" << std::endl;
 			return GL_FALSE;
@@ -86,7 +86,7 @@ void printShaderInfoLog(const GLuint shader)
 		{
 			infoLog = std::make_unique<char[]>(buffSize);
 		}
-		catch(...)
+		catch(std::bad_alloc&)
 		{
 			std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot allocate InfoLog buffer" << std::endl;
 			return;
@@ -112,7 +112,7 @@ void printProgramInfoLog(const GLuint program)
 		{
 			infoLog = std::make_unique<char[]>(buffSize);
 		}
-		catch(...)
+		catch(std::bad_alloc&)
 		{
 			std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot allocate InfoLog buffer" << std::endl;
 			return;
