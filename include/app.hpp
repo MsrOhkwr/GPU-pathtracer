@@ -28,7 +28,7 @@ private:
     const std::string fragment_shader_path = "./resources/fragment_shader.glsl";
     const std::string compute_shader_path = "./resources/compute_shader.glsl";
     const std::string hdri_path = "./output_images/hdri.hdr";
-    const std::string ldri_path = "./output_images/ldri.hdr";
+    const std::string ldri_path = "./output_images/ldri.bmp";
     float theta = 0.0f;
     float phi = 0.0f;
     float move_x = 0.0f;
