@@ -396,7 +396,7 @@ int main()
         cv::flip(LDRI, LDRI, 0);
         cv::imwrite("./output_images/ldri.bmp", LDRI);
     }
-    catch(...)
+    catch(std::bad_alloc&)
     {
         std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot save file" << std::endl;
         glfwDestroyWindow(window);
