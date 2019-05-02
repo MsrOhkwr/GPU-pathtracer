@@ -25,7 +25,7 @@ void scroll_callback(GLFWwindow* window, const double x, const double y)
 	scrolled = true;
 }
 
-int readShaderSource(const GLuint shader, const char* filename)
+int readShaderSource(const GLuint shader, const std::string filename)
 {
 	std::ifstream ifs(filename);
 	if (ifs.fail())
