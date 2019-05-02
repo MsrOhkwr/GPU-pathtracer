@@ -10,7 +10,7 @@ int main()
     if (glfwInit() == GL_FALSE)
     {
         std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot initialize GLFW" << std::endl;
-        std::exit(1);
+        std::exit(EXIT_FAILURE);
     }
     std::atexit(glfwTerminate);
 
@@ -22,7 +22,7 @@ int main()
     if (window == nullptr)
     {
         std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot open a window" << std::endl;
-        std::exit(1);
+        std::exit(EXIT_FAILURE);
     }
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetScrollCallback(window, scroll_callback);
@@ -33,7 +33,7 @@ int main()
     {
         std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot initialize GLAD" << std::endl;
         glfwDestroyWindow(window);
-        std::exit(1);
+        std::exit(EXIT_FAILURE);
     }
         
     int success;
@@ -167,7 +167,7 @@ int main()
     {
         std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot read vertex shader" << std::endl;
         glfwDestroyWindow(window);
-        std::exit(1);
+        std::exit(EXIT_FAILURE);
     }
     glCompileShader(vertex_shader);
     // check for shader compile errors
@@ -177,7 +177,7 @@ int main()
     {
         std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Compile error in vertex_shader" << std::endl;
         glfwDestroyWindow(window);
-        std::exit(1);
+        std::exit(EXIT_FAILURE);
     }
 
     // fragment shader
@@ -186,7 +186,7 @@ int main()
     {
         std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot read fragment shader" << std::endl;
         glfwDestroyWindow(window);
-        std::exit(1);
+        std::exit(EXIT_FAILURE);
     }
     glCompileShader(fragment_shader);
     // check for shader compile errors
@@ -196,7 +196,7 @@ int main()
     {
         std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Compile error in fragment_shader" << std::endl;
         glfwDestroyWindow(window);
-        std::exit(1);
+        std::exit(EXIT_FAILURE);
     }
 
     // compute shader
@@ -205,7 +205,7 @@ int main()
     {
         std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot read fragment shader" << std::endl;
         glfwDestroyWindow(window);
-        std::exit(1);
+        std::exit(EXIT_FAILURE);
     }
     glCompileShader(compute_shader);
     // check for shader compile errors
@@ -215,7 +215,7 @@ int main()
     {
         std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Compile error in compute shader" << std::endl;
         glfwDestroyWindow(window);
-        std::exit(1);
+        std::exit(EXIT_FAILURE);
     }
 
     // link shaders
@@ -230,7 +230,7 @@ int main()
     {
         std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Linking error in shader_program" << std::endl;
         glfwDestroyWindow(window);
-        std::exit(1);
+        std::exit(EXIT_FAILURE);
     }
 
     GLuint ray_program = glCreateProgram();
@@ -242,7 +242,7 @@ int main()
     {
         std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Linking error in ray_program" << std::endl;
         glfwDestroyWindow(window);
-        std::exit(1);
+        std::exit(EXIT_FAILURE);
     }
 
     // vertices
@@ -400,10 +400,10 @@ int main()
     {
         std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot save file" << std::endl;
         glfwDestroyWindow(window);
-        std::exit(1);
+        std::exit(EXIT_FAILURE);
     }
 
     glfwDestroyWindow(window);
 
-    return 0;
+    return EXIT_SUCCESS;
 }

@@ -70,7 +70,7 @@ int readShaderSource(const GLuint shader, const char* filename)
 		}
 	}
 
-	return ret;
+	return GL_TRUE;
 }
 
 void printShaderInfoLog(const GLuint shader)
