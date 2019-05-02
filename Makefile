@@ -1,5 +1,5 @@
-CC      = gcc
-CXX     = g++
+CC      = gcc -std=c11
+CXX     = g++ -std=c++14
 CFLAGS  = -Wall -Wpedantic -O2 
 INCLUDE = -I./include
 LIBRARY = 
