@@ -118,19 +118,19 @@ void App::init()
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, phi_id);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 2);
 
-		glGenBuffers(1, &move_x_id);
+	glGenBuffers(1, &move_x_id);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, move_x_id);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(float), &move_x, GL_DYNAMIC_DRAW);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 3, move_x_id);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 3);
 
-		glGenBuffers(1, &move_y_id);
+	glGenBuffers(1, &move_y_id);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, move_y_id);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(float), &move_y, GL_DYNAMIC_DRAW);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 4, move_y_id);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 4);
 
-		glGenBuffers(1, &scale_id);
+	glGenBuffers(1, &scale_id);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, scale_id);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(float), &scale, GL_DYNAMIC_DRAW);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 5, scale_id);
