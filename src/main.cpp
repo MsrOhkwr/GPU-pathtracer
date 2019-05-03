@@ -8,18 +8,18 @@
 
 int main()
 { 
-    App app;
+	App app;
 
-    try
-    {
-        app.init();
-        app.loop();
-        app.save();
-    }
-    catch(const int& status)
-    {
-        return status;
-    }
-    
-    return EXIT_SUCCESS;
+	try
+	{
+		app.init();
+		app.loop();
+		app.save();
+	}
+	catch(const int& status)
+	{
+		return status;
+	}
+	
+	return EXIT_SUCCESS;
 }

@@ -6,5 +6,5 @@ out vec4 color;
 
 void main()
 {
-    color = texture(img_output, position_screen);
+	color = texture(img_output, position_screen);
 }
