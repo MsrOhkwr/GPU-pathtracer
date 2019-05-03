@@ -14,7 +14,6 @@ App::~App()
     if (window != nullptr)
     {
         glfwDestroyWindow(window);
-        std::cout << "OK" << std::endl;
     }
     glfwTerminate();
 }
