@@ -24,7 +24,7 @@ $ sudo apt install libopencv-dev
 $ make
 ```
 
-## how to execute?
+## How to execute?
 ```
 $ ./bin/GPU-pathtracer
 ```
