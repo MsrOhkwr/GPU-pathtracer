@@ -14,6 +14,7 @@ App::~App()
     if (window != nullptr)
     {
         glfwDestroyWindow(window);
+        std::cout << "OK" << std::endl;
     }
     glfwTerminate();
 }
@@ -23,7 +24,7 @@ void App::init()
     if (glfwInit() == GL_FALSE)
     {
         std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot initialize GLFW" << std::endl;
-        std::exit(EXIT_FAILURE);
+        throw EXIT_FAILURE;
     }
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -32,7 +33,7 @@ void App::init()
     if (window == nullptr)
     {
         std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot open a window" << std::endl;
-        std::exit(EXIT_FAILURE);
+        throw EXIT_FAILURE;
     }
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetScrollCallback(window, scroll_callback);
@@ -42,7 +43,7 @@ void App::init()
     if (gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) == GL_FALSE)
     {
         std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot initialize GLAD" << std::endl;
-        std::exit(EXIT_FAILURE);
+        throw EXIT_FAILURE;
     }
 
     glGenTextures(1, &texture_input_id);
@@ -140,7 +141,7 @@ void App::init()
     if (readShaderSource(vertex_shader, vertex_shader_path) == GL_FALSE)
     {
         std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot read vertex shader" << std::endl;
-        std::exit(EXIT_FAILURE);
+        throw EXIT_FAILURE;
     }
     glCompileShader(vertex_shader);
     glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &success);
@@ -148,14 +149,14 @@ void App::init()
     if (success == GL_FALSE)
     {
         std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Compile error in vertex_shader" << std::endl;
-        std::exit(EXIT_FAILURE);
+        throw EXIT_FAILURE;
     }
 
     fragment_shader = glad_glCreateShader(GL_FRAGMENT_SHADER);
     if (readShaderSource(fragment_shader, fragment_shader_path) == GL_FALSE)
     {
         std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot read fragment shader" << std::endl;
-        std::exit(EXIT_FAILURE);
+        throw EXIT_FAILURE;
     }
     glCompileShader(fragment_shader);
     glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &success);
@@ -163,14 +164,14 @@ void App::init()
     if (success == GL_FALSE)
     {
         std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Compile error in fragment_shader" << std::endl;
-        std::exit(EXIT_FAILURE);
+        throw EXIT_FAILURE;
     }
 
     compute_shader = glad_glCreateShader(GL_COMPUTE_SHADER);
     if (readShaderSource(compute_shader, compute_shader_path) == GL_FALSE)
     {
         std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot read fragment shader" << std::endl;
-        std::exit(EXIT_FAILURE);
+        throw EXIT_FAILURE;
     }
     glCompileShader(compute_shader);
     glGetShaderiv(compute_shader, GL_COMPILE_STATUS, &success);
@@ -178,7 +179,7 @@ void App::init()
     if (success == GL_FALSE)
     {
         std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Compile error in compute shader" << std::endl;
-        std::exit(EXIT_FAILURE);
+        throw EXIT_FAILURE;
     }
 
     shader_program = glCreateProgram();
@@ -190,7 +191,7 @@ void App::init()
     if (success == GL_FALSE)
     {
         std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Linking error in shader_program" << std::endl;
-        std::exit(EXIT_FAILURE);
+        throw EXIT_FAILURE;
     }
 
     ray_program = glCreateProgram();
@@ -201,7 +202,7 @@ void App::init()
     if (success == GL_FALSE)
     {
         std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Linking error in ray_program" << std::endl;
-        std::exit(EXIT_FAILURE);
+        throw EXIT_FAILURE;
     }
 
     const std::array<float, 15> vertices =
@@ -363,6 +364,6 @@ void App::save()
     catch(std::bad_alloc&)
     {
         std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot save file" << std::endl;
-        std::exit(EXIT_FAILURE);
+        throw EXIT_FAILURE;
     }
 }

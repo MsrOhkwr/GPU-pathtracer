@@ -10,9 +10,16 @@ int main()
 { 
     App app;
 
-    app.init();
-    app.loop();
-    app.save();
-
+    try
+    {
+        app.init();
+        app.loop();
+        app.save();
+    }
+    catch(const int& status)
+    {
+        return status;
+    }
+    
     return EXIT_SUCCESS;
 }
