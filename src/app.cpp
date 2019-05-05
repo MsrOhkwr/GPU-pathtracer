@@ -130,6 +130,7 @@ void App::init()
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 4, move_y_id);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 4);
 
+	extern float scale;
 	glGenBuffers(1, &scale_id);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, scale_id);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(float), &scale, GL_DYNAMIC_DRAW);
@@ -226,6 +227,7 @@ void App::loop()
 {
 	bool clicked1 = false;
 	bool clicked2 = false;
+	extern float scale;
 	extern bool scrolled;
 	float theta_tmp = theta;
 	float phi_tmp = phi;
