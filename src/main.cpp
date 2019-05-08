@@ -8,6 +8,12 @@
 
 int main()
 { 
+	if (glfwInit() == GL_FALSE)
+	{
+		std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot initialize GLFW" << std::endl;
+		throw EXIT_FAILURE;
+	}
+
 	App app;
 
 	try
@@ -18,8 +24,10 @@ int main()
 	}
 	catch(const int& status)
 	{
+		glfwTerminate();
 		return status;
 	}
 	
+	glfwTerminate();
 	return EXIT_SUCCESS;
 }
