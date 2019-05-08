@@ -15,17 +15,10 @@ App::~App()
 	{
 		glfwDestroyWindow(window);
 	}
-	glfwTerminate();
 }
 
 void App::init()
 {
-	if (glfwInit() == GL_FALSE)
-	{
-		std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot initialize GLFW" << std::endl;
-		throw EXIT_FAILURE;
-	}
-
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 	window = glfwCreateWindow(width_screen, height_screen, "OpenGL", nullptr, nullptr);
@@ -342,6 +335,7 @@ void App::loop()
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
+	glfwDestroyWindow(window);
 }
 
 void App::save()
