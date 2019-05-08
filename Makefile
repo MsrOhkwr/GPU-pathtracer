@@ -1,6 +1,6 @@
 CC         = gcc -std=c11
 CXX        = g++ -std=c++14
-CFLAGS     = -Wall -Wpedantic -O2 
+CFLAGS     = -Wall -Wpedantic -O2 -pthread
 INCLUDE    = -I./include
 LIBRARY    = 
 LIB        = -lglfw -ldl -lopencv_core -lopencv_imgcodecs -lopencv_imgproc

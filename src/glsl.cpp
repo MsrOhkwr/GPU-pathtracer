@@ -16,13 +16,26 @@ void framebuffer_size_callback(GLFWwindow* window, const int width, const int he
 	}
 }
 
-static float MouseWheelScale = 0.05f;
-float scale = 1.0f;
-bool scrolled = false;
+static float g_mouseWheelScale = 0.1f;
+float g_scale = 0.0f;
+bool g_scrolled = false;
 void scroll_callback(GLFWwindow* window, const double x, const double y)
 {
-	scale = fmaxf(0.0f, scale - MouseWheelScale * (float)y);
-	scrolled = true;
+	g_scale = g_mouseWheelScale * (float)y;
+	g_scrolled = true;
+}
+
+GLFWwindow* g_focusedWindow;
+void window_focus_callback(GLFWwindow* window, const int focused)
+{
+	if (focused == GL_TRUE)
+	{
+		g_focusedWindow = window;
+	}
+	else
+	{
+		g_focusedWindow = nullptr;
+	}
 }
 
 int readShaderSource(const GLuint shader, const std::string filename)

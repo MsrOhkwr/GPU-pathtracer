@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include <thread>
 #include <glsl.hpp>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -14,13 +15,25 @@ int main()
 		return EXIT_FAILURE;
 	}
 
-	App app;
+	constexpr unsigned char nWindow = 1;
+	std::unique_ptr<App[]> appList = std::make_unique<App[]>(nWindow);
+	std::unique_ptr<std::thread[]> thList = std::make_unique<std::thread[]>(nWindow);
 
 	try
 	{
-		app.init();
-		app.loop();
-		app.save();
+		for (unsigned char i = 0; i < nWindow; i++)
+		{
+			appList[i].init("window" + std::to_string(i));
+		}
+		for (unsigned char i = 0; i < nWindow; i++)
+		{
+			thList[i] = std::thread(&App::loop, &appList[i]);
+		}
+		for (unsigned char i = 0; i < nWindow; i++)
+		{
+			thList[i].join();
+		}
+		appList[0].save();
 	}
 	catch(const int& status)
 	{
