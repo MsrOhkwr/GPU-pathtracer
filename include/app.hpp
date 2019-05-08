@@ -4,6 +4,16 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <string>
+#include <memory>
+
+const std::array<float, 15> vertices =
+{
+	 1,  1, 0,
+	 1, -1, 0,
+	-1, -1, 0,
+	-1,  1, 0,
+	 1,  1, 0,
+};
 
 class App
 {
@@ -11,7 +21,7 @@ public:
 	App();
 	~App();
 
-	void init();
+	void init(std::string);
 	void loop();
 	void save();
 
@@ -33,6 +43,7 @@ private:
 	float phi = 0.0f;
 	float move_x = 0.0f;
 	float move_y = 0.0f;
+	float scale = 1.0f;
 	int success;
 	GLuint texture_input_id;
 	GLuint texture_output_id;

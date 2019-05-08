@@ -17,11 +17,11 @@ App::~App()
 	}
 }
 
-void App::init()
+void App::init(std::string windowName)
 {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
-	window = glfwCreateWindow(width_screen, height_screen, "OpenGL", nullptr, nullptr);
+	window = glfwCreateWindow(width_screen, height_screen, windowName.c_str(), nullptr, nullptr);
 	if (window == nullptr)
 	{
 		std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot open a window" << std::endl;
@@ -29,6 +29,7 @@ void App::init()
 	}
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetScrollCallback(window, scroll_callback);
+	glfwSetWindowFocusCallback(window, window_focus_callback);
 
 	glfwMakeContextCurrent(window);
 
@@ -123,7 +124,6 @@ void App::init()
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 4, move_y_id);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 4);
 
-	extern float scale;
 	glGenBuffers(1, &scale_id);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, scale_id);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(float), &scale, GL_DYNAMIC_DRAW);
@@ -198,14 +198,7 @@ void App::init()
 		throw EXIT_FAILURE;
 	}
 
-	const std::array<float, 15> vertices =
-	{
-		 1,  1, 0,
-		 1, -1, 0,
-		-1, -1, 0,
-		-1,  1, 0,
-		 1,  1, 0,
-	};
+	extern const std::array<float, 15> vertices;
 
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
@@ -218,10 +211,13 @@ void App::init()
 
 void App::loop()
 {
+	glfwMakeContextCurrent(window);
+
+	extern GLFWwindow* g_focusedWindow;
 	bool clicked1 = false;
 	bool clicked2 = false;
-	extern float scale;
-	extern bool scrolled;
+	extern float g_scale;
+	extern bool g_scrolled;
 	float theta_tmp = theta;
 	float phi_tmp = phi;
 	float move_x_tmp = move_x;
@@ -289,13 +285,14 @@ void App::loop()
 			move_y_tmp = move_y;
 		}
 
-		if (scrolled)
+		if (g_scrolled && g_focusedWindow == window)
 		{
 			glBindBuffer(GL_SHADER_STORAGE_BUFFER, accumN_id);
 			glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(unsigned int), &accumN_id, GL_DYNAMIC_COPY);
 			glBindBuffer(GL_SHADER_STORAGE_BUFFER, scale_id);
+			scale = fmaxf(0.0f, scale + g_scale);
 			glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(float), &scale, GL_DYNAMIC_COPY);
-			scrolled = false;
+			g_scrolled = false;
 		}
 		
 		if (glfwGetKey(window, GLFW_KEY_H))
@@ -319,7 +316,7 @@ void App::loop()
 			glBindBuffer(GL_SHADER_STORAGE_BUFFER, move_y_id);
 			glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(float), &move_y, GL_DYNAMIC_COPY);
 
-			scale = 1.0f;
+			g_scale = 1.0f;
 			glBindBuffer(GL_SHADER_STORAGE_BUFFER, scale_id);
 			glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(float), &scale, GL_DYNAMIC_COPY);
 		}
