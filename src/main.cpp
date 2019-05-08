@@ -11,7 +11,7 @@ int main()
 	if (glfwInit() == GL_FALSE)
 	{
 		std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot initialize GLFW" << std::endl;
-		throw EXIT_FAILURE;
+		return EXIT_FAILURE;
 	}
 
 	App app;
