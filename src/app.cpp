@@ -94,7 +94,6 @@ void App::init(std::string windowName)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	cv::Mat img_back = cv::imread(image_back_path, -1);
 	cv::cvtColor(img_back, img_back, cv::COLOR_BGRA2RGBA);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, img_back.cols, img_back.rows, 0, GL_RGBA, GL_FLOAT, img_back.data);
@@ -130,10 +129,10 @@ void App::init(std::string windowName)
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 5, scale_id);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 5);
 
-		vertex_shader = glad_glCreateShader(GL_VERTEX_SHADER);
-		if (readShaderSource(vertex_shader, vertex_shader_path) == GL_FALSE)
-		{
-				std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot read vertex shader" << std::endl;
+	vertex_shader = glad_glCreateShader(GL_VERTEX_SHADER);
+	if (readShaderSource(vertex_shader, vertex_shader_path) == GL_FALSE)
+	{
+		std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot read vertex shader" << std::endl;
 		throw EXIT_FAILURE;
 	}
 	glCompileShader(vertex_shader);
