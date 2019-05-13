@@ -243,14 +243,14 @@ vec4 toneMap(const in vec4 color, const in float white)
 
 vec4 gammaCorrect(const in vec4 color, const in float gamma)
 {
-	vec4 result;
-
 	const float g = 1.0f / gamma;
-
-	result.r = pow(color.r, g);
-	result.g = pow(color.g, g);
-	result.b = pow(color.b, g);
-	result.a = 1.0f;
+	const vec4 result = 
+	{
+		pow(color.r, g),
+		pow(color.g, g),
+		pow(color.b, g),
+		1.0f,
+	};
 
 	return result;
 }
