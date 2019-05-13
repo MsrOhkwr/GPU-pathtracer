@@ -150,33 +150,10 @@ void mat_diffuse(inout ray r, const in hit h)
 	const float dx = abs(dot(h.normal, ex));
 	const float dy = abs(dot(h.normal, ey));
 	const float dz = abs(dot(h.normal, ez));
-	vec3 vx;
-	vec3 vy;
-	vec3 vz;
-	if (dy < dx)
-	{
-		if (dz < dy)
-		{
-			vy = ez;
-		}
-		else
-		{
-			vy = ey;
-		}
-	}
-	else
-	{
-		if (dz < dx)
-		{
-			vy = ez;
-		}
-		else
-		{
-			vy = ex;
-		}
-	}
-	vx = normalize(cross(vy, h.normal));
-	vz = normalize(cross(vx, h.normal));
+	const vec3 vy = (dy < dx) ? (dz < dy) ? ez : ey : (dz < dx) ? ez : ex;
+	const vec3 vx = normalize(cross(vy, h.normal));
+	const vec3 vz = normalize(cross(vx, h.normal));
+
 	r.direction = normalize(vx * d * cos(v) + h.normal * r.direction.y + vz * d * sin(v));
 	r.origin = h.position + h.normal * DELTA;
 	r.scatter *= h.color;
