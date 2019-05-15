@@ -1,6 +1,7 @@
 CC         = gcc -std=c11
 CXX        = g++ -std=c++14
-CFLAGS     = -Wall -Wpedantic -O2 -pthread
+CFLAGS     = -O2 -pthread
+CXXFLAGS   = -Wall -Wpedantic -O2 -pthread
 INCLUDE    = -I./include
 LIBRARY    = 
 LIB        = -lglfw -ldl -lopencv_core -lopencv_imgcodecs -lopencv_imgproc
@@ -30,7 +31,7 @@ ${OBJDIR}/%.o: ${SRCDIR}/%.c
 	${CC} ${CFLAGS} ${INCLUDE} -o $@ -c $< ${LIB}
 
 ${OBJDIR}/%.o: ${SRCDIR}/%.cpp
-	${CXX} ${CFLAGS} ${INCLUDE} -o $@ -c $< ${LIB}
+	${CXX} ${CXXFLAGS} ${INCLUDE} -o $@ -c $< ${LIB}
 
 clean: 
 	rm -rf ${BINDIR} ${OBJDIR}
