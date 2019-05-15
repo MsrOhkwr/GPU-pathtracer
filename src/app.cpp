@@ -20,7 +20,7 @@ App::~App()
 void App::init(std::string windowName)
 {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	window = glfwCreateWindow(width_screen, height_screen, windowName.c_str(), nullptr, nullptr);
 	if (window == nullptr)
 	{
@@ -315,7 +315,7 @@ void App::loop()
 			glBindBuffer(GL_SHADER_STORAGE_BUFFER, move_y_id);
 			glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(float), &move_y, GL_DYNAMIC_COPY);
 
-			g_scale = 1.0f;
+			scale = 1.0f;
 			glBindBuffer(GL_SHADER_STORAGE_BUFFER, scale_id);
 			glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(float), &scale, GL_DYNAMIC_COPY);
 		}

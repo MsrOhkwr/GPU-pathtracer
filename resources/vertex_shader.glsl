@@ -1,4 +1,4 @@
-#version 450 core
+#version 430 core
 
 in vec3 position_vertices;
 out vec2 position_screen;

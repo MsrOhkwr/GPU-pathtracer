@@ -1,4 +1,4 @@
-#version 450 core
+#version 430 core
 
 in vec2 position_screen;
 layout(binding = 1) uniform sampler2D img_output;
