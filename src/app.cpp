@@ -3,6 +3,7 @@
 #include <memory>
 #include <glsl.hpp>
 #include <opencv2/opencv.hpp>
+#include <check.hpp>
 
 App::App()
 {
@@ -24,8 +25,7 @@ void App::init(std::string windowName)
 	window = glfwCreateWindow(width_screen, height_screen, windowName.c_str(), nullptr, nullptr);
 	if (window == nullptr)
 	{
-		std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot open a window" << std::endl;
-		throw EXIT_FAILURE;
+		throw appError(glWindowError, __FILE__, __LINE__);
 	}
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetScrollCallback(window, scroll_callback);
@@ -35,8 +35,7 @@ void App::init(std::string windowName)
 
 	if (gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) == GL_FALSE)
 	{
-		std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot initialize GLAD" << std::endl;
-		throw EXIT_FAILURE;
+		throw appError(glInitError, __FILE__, __LINE__);
 	}
 
 	glGenTextures(1, &texture_input_id);
@@ -132,46 +131,40 @@ void App::init(std::string windowName)
 	vertex_shader = glad_glCreateShader(GL_VERTEX_SHADER);
 	if (readShaderSource(vertex_shader, vertex_shader_path) == GL_FALSE)
 	{
-		std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot read vertex shader" << std::endl;
-		throw EXIT_FAILURE;
+		throw appError(glFileError, __FILE__, __LINE__, vertex_shader_path);
 	}
 	glCompileShader(vertex_shader);
 	glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &success);
 	printShaderInfoLog(vertex_shader);
 	if (success == GL_FALSE)
 	{
-		std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Compile error in vertex_shader" << std::endl;
-		throw EXIT_FAILURE;
+		throw appError(glCompileError, __FILE__, __LINE__, vertex_shader_path);
 	}
 
 	fragment_shader = glad_glCreateShader(GL_FRAGMENT_SHADER);
 	if (readShaderSource(fragment_shader, fragment_shader_path) == GL_FALSE)
 	{
-		std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot read fragment shader" << std::endl;
-		throw EXIT_FAILURE;
+		throw appError(glFileError, __FILE__, __LINE__, fragment_shader_path);
 	}
 	glCompileShader(fragment_shader);
 	glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &success);
 	printShaderInfoLog(fragment_shader);
 	if (success == GL_FALSE)
 	{
-		std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Compile error in fragment_shader" << std::endl;
-		throw EXIT_FAILURE;
+		throw appError(glCompileError, __FILE__, __LINE__, fragment_shader_path);
 	}
 
 	compute_shader = glad_glCreateShader(GL_COMPUTE_SHADER);
 	if (readShaderSource(compute_shader, compute_shader_path) == GL_FALSE)
 	{
-		std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot read fragment shader" << std::endl;
-		throw EXIT_FAILURE;
+		throw appError(glFileError, __FILE__, __LINE__, compute_shader_path);
 	}
 	glCompileShader(compute_shader);
 	glGetShaderiv(compute_shader, GL_COMPILE_STATUS, &success);
 	printShaderInfoLog(compute_shader);
 	if (success == GL_FALSE)
 	{
-		std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Compile error in compute shader" << std::endl;
-		throw EXIT_FAILURE;
+		throw appError(glCompileError, __FILE__, __LINE__, compute_shader_path);
 	}
 
 	shader_program = glCreateProgram();
@@ -182,8 +175,7 @@ void App::init(std::string windowName)
 	printProgramInfoLog(shader_program);
 	if (success == GL_FALSE)
 	{
-		std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Linking error in shader_program" << std::endl;
-		throw EXIT_FAILURE;
+		throw appError(glLinkError, __FILE__, __LINE__);
 	}
 
 	ray_program = glCreateProgram();
@@ -193,8 +185,7 @@ void App::init(std::string windowName)
 	printProgramInfoLog(ray_program);
 	if (success == GL_FALSE)
 	{
-		std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Linking error in ray_program" << std::endl;
-		throw EXIT_FAILURE;
+		throw appError(glLinkError, __FILE__, __LINE__);
 	}
 
 	extern const std::array<float, 15> vertices;
@@ -336,25 +327,33 @@ void App::loop()
 
 void App::save()
 {
+	glBindTexture(GL_TEXTURE_2D, texture_input_id);
+	std::unique_ptr<float[]> gl_texture_bytes_f;
 	try
 	{
-		glBindTexture(GL_TEXTURE_2D, texture_input_id);
-		const std::unique_ptr<float[]> gl_texture_bytes_f = std::make_unique<float[]>(width_texture * height_texture * 3);
-		glGetTexImage(GL_TEXTURE_2D, 0, GL_BGR, GL_FLOAT, gl_texture_bytes_f.get());
-		cv::Mat HDRI(height_texture, width_texture, CV_32FC3, gl_texture_bytes_f.get());
-		cv::flip(HDRI, HDRI, 0);
-		cv::imwrite(hdri_path, HDRI);
-
-		glBindTexture(GL_TEXTURE_2D, texture_output_id);
-		const std::unique_ptr<unsigned char[]> gl_texture_bytes_b = std::make_unique<unsigned char[]>(width_texture * height_texture * 3);
-		glGetTexImage(GL_TEXTURE_2D, 0, GL_BGR, GL_UNSIGNED_BYTE, gl_texture_bytes_b.get());
-		cv::Mat LDRI(height_texture, width_texture, CV_8UC3, gl_texture_bytes_b.get());
-		cv::flip(LDRI, LDRI, 0);
-		cv::imwrite(ldri_path, LDRI);
+		gl_texture_bytes_f = std::make_unique<float[]>(width_texture * height_texture * 4);
 	}
-	catch(std::bad_alloc&)
+	catch(const std::bad_alloc&)
 	{
-		std::cerr << "Failed (" << __FILE__ << " at line " << __LINE__ << ") : " << "Cannot save file" << std::endl;
-		throw EXIT_FAILURE;
+		throw appError(allocateError, __FILE__, __LINE__);
 	}
+	glGetTexImage(GL_TEXTURE_2D, 0, GL_BGR, GL_FLOAT, gl_texture_bytes_f.get());
+	cv::Mat HDRI(height_texture, width_texture, CV_32FC3, gl_texture_bytes_f.get());
+	cv::flip(HDRI, HDRI, 0);
+	cv::imwrite(hdri_path, HDRI);
+
+	glBindTexture(GL_TEXTURE_2D, texture_output_id);
+	std::unique_ptr<unsigned char[]> gl_texture_bytes_b;
+	try
+	{
+		gl_texture_bytes_b = std::make_unique<unsigned char[]>(width_texture * height_texture * 3);
+	}
+	catch(const std::bad_alloc&)
+	{
+		throw appError(allocateError, __FILE__, __LINE__);
+	}
+	glGetTexImage(GL_TEXTURE_2D, 0, GL_BGR, GL_UNSIGNED_BYTE, gl_texture_bytes_b.get());
+	cv::Mat LDRI(height_texture, width_texture, CV_8UC3, gl_texture_bytes_b.get());
+	cv::flip(LDRI, LDRI, 0);
+	cv::imwrite(ldri_path, LDRI);
 }
