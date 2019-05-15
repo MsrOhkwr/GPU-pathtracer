@@ -1,7 +1,7 @@
 #version 450 core
 
-attribute vec3 position_vertices;
-varying vec2 position_screen;
+in vec3 position_vertices;
+out vec2 position_screen;
 
 void main()
 {
