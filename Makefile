@@ -33,4 +33,4 @@ ${OBJDIR}/%.o: ${SRCDIR}/%.cpp
 	${CXX} ${CFLAGS} ${INCLUDE} -o $@ -c $< ${LIB}
 
 clean: 
-	rm -rf ${TARGET} ${OBJDIR}/*
+	rm -rf ${BINDIR} ${OBJDIR}
