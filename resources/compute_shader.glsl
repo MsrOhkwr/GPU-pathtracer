@@ -36,8 +36,14 @@ layout(std430, binding = 5) buffer scale_id
 	float scale;
 };
 
-ivec3 groupNum = ivec3(gl_NumWorkGroups) * ivec3(gl_WorkGroupSize);
-ivec3 groupIdx = ivec3(gl_GlobalInvocationID);
+ivec3 groupNum = ivec3(
+	gl_NumWorkGroups.x * gl_WorkGroupSize.x,
+	gl_NumWorkGroups.y * gl_WorkGroupSize.y,
+	gl_NumWorkGroups.z * gl_WorkGroupSize.z);
+ivec3 groupIdx = ivec3(
+	gl_GlobalInvocationID.x,
+	gl_GlobalInvocationID.y,
+	gl_GlobalInvocationID.z);
 
 uvec4 xors;
 
