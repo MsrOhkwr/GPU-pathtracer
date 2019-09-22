@@ -6,13 +6,12 @@
 #include <string>
 #include <memory>
 
-const std::array<float, 15> vertices =
+const std::array<float, 10> vertices =
 {
-	 1,  1, 0,
-	 1, -1, 0,
-	-1, -1, 0,
-	-1,  1, 0,
-	 1,  1, 0,
+	 1,  1,
+	 1, -1,
+	-1,  1,
+	-1, -1,
 };
 
 class App
